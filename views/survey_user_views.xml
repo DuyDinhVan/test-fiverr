@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="survey_user_input_view_form_inherit" model="ir.ui.view">
+            <field name="name">survey.user_input.view.form.inherit</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_view_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//label[@for='scoring_percentage']" position="before">
+                    <field name="fraction_score" attrs="{'invisible': [('scoring_type', '=', 'no_scoring')]}"/>
+                </xpath>
+
+                <xpath expr="//notebook//page//field[@name='user_input_line_ids']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                </xpath>
+
+                <xpath expr="//notebook//page//field[@name='user_input_line_ids']//tree" position="attributes">
+                    <attribute name="editable">bottom</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="survey_user_input_view_tree_inherit" model="ir.ui.view">
+            <field name="name">survey.user_input.view.tree.inherit</field>
+            <field name="model">survey.user_input</field>
+            <field name="inherit_id" ref="survey.survey_user_input_view_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='scoring_percentage']" position="before">
+                    <field name="fraction_score"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="survey_question_form_inherit" model="ir.ui.view">
+            <field name="name">survey.question.form.inherit</field>
+            <field name="model">survey.question</field>
+            <field name="inherit_id" ref="survey.survey_question_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//notebook//page[@name='answers']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('is_page', '=', True),
+                        '&amp;', ('scoring_type', '=', 'no_scoring'), ('question_type', 'in', ['numerical_box', 'date', 'datetime']),
+                    ]}</attribute>
+                </xpath>
+
+                <xpath expr="//notebook//page[@name='answers']//group[1]//group[2]" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('scoring_type', '=', 'no_scoring'),
+                        ('question_type', 'not in', ['text_box', 'char_box', 'numerical_box', 'date', 'datetime'])
+                    ]}</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
